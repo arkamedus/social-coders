@@ -1,0 +1,97 @@
+<html>
+
+<head>
+    <title>Notepad!</title>
+    <style>
+        
+        body {
+            font-family: sans-serif;
+        }
+
+        #noteinput {
+            color: blue;
+            border: 1px solid red;
+            padding: 4px;
+        }
+        
+        #notelist {
+            border: 2px solid grey;
+        }
+        .item {
+            padding: 8px;
+            margin: 4px;
+            border-bottom: 1px solid green;
+        }
+        .control {
+            display: inline-block;
+            background: blue;
+            color: white;
+        }
+        .control:hover{
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Notepad App!</h1>
+    <h2>Here are all of my notes:</h2>
+    <div id="notelist">
+    </div>
+    <br />
+    <input type="text" name="note" id="noteinput" />
+    <input type="button" id="notebutton" value="Add to Notes!" />
+
+    <script type="text/javascript">
+        var div_notelist = document.getElementById("notelist");
+        var input_note = document.getElementById("noteinput");
+        var button_note = document.getElementById("notebutton");
+        
+        var is_editing = false;
+        var editing_div = null;
+
+        button_note.onclick = function() {
+            
+            if (is_editing){
+                
+                editing_div.innerHTML = "<div onclick='div_notelist.removeChild(this.parentNode);' class='control'>X </div> <div onclick='editDiv(this.parentNode);' class='control'>edit </div> " + input_note.value;
+                
+                input_note.value = "";
+                
+                button_note.value = "Add to Notes!";
+                is_editing = false;
+                editing_div = null;
+                
+            }else{
+            
+            var temp_div = document.createElement('div');
+            temp_div.innerHTML = "<div onclick='div_notelist.removeChild(this.parentNode);' class='control'>X </div> <div onclick='editDiv(this.parentNode);' class='control'>edit </div> " + input_note.value;
+            
+            temp_div.className="item";
+                
+            input_note.value = "";
+
+            div_notelist.appendChild(temp_div);
+                
+            }
+            
+        };
+        
+        function editDiv(div){
+            is_editing = true;
+            input_note.value = div.innerHTML.slice(
+            
+                "<div onclick='div_notelist.removeChild(this.parentNode);'>X </div> <div onclick='editDiv(this.parentNode);'>edit </div> ".length,div.innerHTML.length
+            
+            );
+            
+            button_note.value = "Update note";
+            editing_div = div;
+            
+        }
+
+    </script>
+
+</body>
+
+</html>
